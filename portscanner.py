@@ -17,7 +17,7 @@ class Scanner(object):
         try:
             connSkt = socket(AF_INET, SOCK_STREAM)
             connSkt.connect((tgtHost, tgtPort))
-            connSkt.send('Attack vector initialisation!!!\r\n')
+            connSkt.send('AttackVectorInitialisation\r\n'.encode())
             results = connSkt.recv(100)
             screenLock.acquire()
             print(f"[+]{tgtPort}/tcp open")
