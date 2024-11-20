@@ -8,27 +8,27 @@ class Scanner(object):
     def __init__(self):
         self.runner()
 
-    def connScan(self, tgtHost, tgtPort):
+    def connScan(self):
         try:
             connSkt = socket(AF_INET, SOCK_STREAM)
-            connSkt.connect((tgtHost, tgtPort))
+            connSkt.connect((self.tgtHost, self.tgtPort))
             connSkt.send('Attack vector initialisation!!!\r\n')
             results = connSkt.recv(100)
             screenLock.acquire()
-            print(f"[+]{tgtPort}/tcp open")
+            print(f"[+]{self.tgtPort}/tcp open")
             print(f"[+] {str(results)}")
         except:
             screenLock.acquire()
-            print("[-]{tgtPort}/tcp closed")
+            print("[-]{self.tgtPort}/tcp closed")
         finally:
             screenLock.release()
             connSkt.close()
     
     def portScan(self, tgtHost, tgtPorts):
         try:
-            tgtIP = gethostbyname(tgtHost)
+            tgtIP = gethostbyname(self.tgtHost)
         except:
-            print(f"[-] Cannot resolve '{tgtHost}': Unknown host")
+            print(f"[-] Cannot resolve '{self.tgtHost}': Unknown host")
             return
         
         try:
@@ -38,24 +38,24 @@ class Scanner(object):
             print(f"\n[+] Scan results for: {tgtIP}")
 
         setdefaulttimeout(1)
-        for tgtPort in tgtPorts:
-            t = Thread(target=self.connScan, args=(tgtHost, int(tgtPort)))
+        for self.tgtPort in self.tgtPorts:
+            t = Thread(target=self.connScan, args=(self.tgtHost, int(self.tgtPort)))
             t.start()
 
     def runner(self):
         parser = optparse.OptionParser('usage%prog '+\
                                        '-H <target host> -p <target_port>')
-        parser.add_option('-H', dest='tgtHost', type='string', \
+        parser.add_option('-H', dest='self.tgtHost', type='string', \
                           help='specify target host')
-        parser.add_option('-p', dest='tgtPort', type='string', \
+        parser.add_option('-p', dest='self.tgtPort', type='string', \
                           help='specify target port[s] separated by comma')
         (options, args) = parser.parse_args()
-        tgtHost = options.tgtHost
-        tgtPorts = str(options.tgtPort).split(',')
-        if (tgtHost == None) | (tgtPorts[0] == None):
+        self.tgtHost = options.self.tgtHost
+        self.tgtPorts = str(options.self.tgtPort).split(',')
+        if (self.tgtHost == None) | (self.tgtPorts[0] == None):
             print(parser.usage)
             exit(0)
-        self.portScan(tgtHost, tgtPorts)
+        self.portScan(self.tgtHost, self.tgtPorts)
 
 
 if __name__ == '__main__':
