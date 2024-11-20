@@ -23,8 +23,8 @@ class Scanner(object):
             print(f"[+]{tgtPort}/tcp open")
             print(f"[+] {str(results)}")
             f = open("openPorts.txt", "a")
-            f.write(f"[+]{tgtPort}/tcp open")
-            f.write(f"[+] {str(results)}")
+            f.write(f"[+]{tgtPort}/tcp open... ")
+            f.write(f"[+] {str(results)}\r\n\r\n")
             f.close()
         except:
             screenLock.acquire()
