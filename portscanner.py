@@ -50,8 +50,8 @@ class Scanner(object):
         parser.add_option('-p', dest='self.tgtPort', type='string', \
                           help='specify target port[s] separated by comma')
         (options, args) = parser.parse_args()
-        self.tgtHost = options.self.tgtHost
-        self.tgtPorts = str(options.self.tgtPort).split(',')
+        self.tgtHost = options.tgtHost
+        self.tgtPorts = str(options.tgtPort).split(',')
         if (self.tgtHost == None) | (self.tgtPorts[0] == None):
             print(parser.usage)
             exit(0)
